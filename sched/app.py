@@ -18,7 +18,7 @@ db.Model = Base
 
 @app.route('/object/')
 def return_object():
-    headers = {'Content-Type': 'text/plain'}    
+    headers = {'Content-Type': 'text/plain'}
     status = 404
     t = ('Hefjasd fasdld!', status, headers)
     return make_response(t)
