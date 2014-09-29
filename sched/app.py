@@ -54,10 +54,8 @@ def appointment_create():
 def appointment_delete(appointment_id):
     """
     Muestra el formulario para borrar una cita en especifico
-    >>> appointment_delete(1)
-    'Form to delete a new appointment.'
     """
-    return 'Form to delete a new appointment.'
+    raise NotImplementedError('DELETE')
 
 
 @app.route('/')
