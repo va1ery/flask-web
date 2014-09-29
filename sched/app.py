@@ -1,7 +1,27 @@
 from flask import *
+from flask import make_response
+from flask.ext.sqlalchemy import SQLAlchemy
+from models import Base
+
 import doctest
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
+
+# Use Flask-SQLAlchemy for its engine and session
+# configuration. Load the extension, giving it the app object,
+# and override its default Model class with the pure
+# SQLAlchemy declarative Base class.
+db = SQLAlchemy(app)
+db.Model = Base
+
+
+@app.route('/object/')
+def return_object():
+    headers = {'Content-Type': 'text/plain'}    
+    status = 404
+    t = ('Hefjasd fasdld!', status, headers)
+    return make_response(t)
 
 
 @app.route('/appointments/')
