@@ -9,4 +9,4 @@ before_script:
 
 # command to run tests
 script: 
-  - nosetests --with-doctest --with-coverage -s sched
+  - nosetests --with-doctest -s sched
