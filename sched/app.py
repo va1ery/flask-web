@@ -10,7 +10,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-
 from datetime import datetime
 from sqlalchemy import Boolean, Column
 from sqlalchemy import DateTime, Integer, String, Text
@@ -78,34 +77,31 @@ def appointment_create():
     Provide HTML form to create a new appointment.    
     >>> appointment_create()
     'Form to create a new appointment.'
-    """    
+    """
     form = AppointmentForm(request.form)
     if request.method == 'POST' and form.validate():
         #appt = Appointment()
-        #form.populate_obj(appt)
+        # form.populate_obj(appt)
         #print("Start: {}".format(appt.start))
-        
+
         # Create. Add a new model instance to the session.
         now = datetime.now()
         appt = Appointment(
-        title='My Appointment',
-        start=now,
-        end=now,  
-        allday=False)
-        
+            title='My Appointment',
+            start=now,
+            end=now,
+            allday=False)
+
         db.session.add(appt)
         db.session.commit()
 
-
-
-
-        #db.session.add(appt)
-        #db.session.commit()
+        # db.session.add(appt)
+        # db.session.commit()
         # Success. Send user back to full appointment list.
         return redirect(url_for('appointment_list'))
     # Either first load or validation error at this point.
     return render_template('appointment/edit.html',
-    form=form)
+                           form=form)
 
 
 @app.route(
@@ -124,9 +120,5 @@ def index():
 
 
 if __name__ == "__main__":
-    doctest.testmod()    
+    doctest.testmod()
     app.run('0.0.0.0', 5000)
-    
-
-    
-
