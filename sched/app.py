@@ -1,7 +1,21 @@
 from flask import *
-from flask import make_response
 from flask.ext.sqlalchemy import SQLAlchemy
 from models import Base
+
+from flask import abort, jsonify, redirect, render_template
+from flask import request, url_for
+from sched.forms import AppointmentForm
+from sched.models import Appointment
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+
+
+from datetime import datetime
+from sqlalchemy import Boolean, Column
+from sqlalchemy import DateTime, Integer, String, Text
+from sqlalchemy.ext.declarative import declarative_base
+
 
 import doctest
 
@@ -12,6 +26,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
 # configuration. Load the extension, giving it the app object,
 # and override its default Model class with the pure
 # SQLAlchemy declarative Base class.
+
+
 db = SQLAlchemy(app)
 db.Model = Base
 
@@ -56,16 +72,40 @@ def appointment_edit(appointment_id):
     return 'Form to edit appointment #{0}.'.format(appointment_id)
 
 
-@app.route(
-    '/appointments/create/',
-    methods=['GET', 'POST'])
+@app.route('/appointments/create/', methods=['GET', 'POST'])
 def appointment_create():
     """
-    Muestra el formulario para crear una cita
+    Provide HTML form to create a new appointment.    
     >>> appointment_create()
     'Form to create a new appointment.'
-    """
-    return 'Form to create a new appointment.'
+    """    
+    form = AppointmentForm(request.form)
+    if request.method == 'POST' and form.validate():
+        #appt = Appointment()
+        #form.populate_obj(appt)
+        #print("Start: {}".format(appt.start))
+        
+        # Create. Add a new model instance to the session.
+        now = datetime.now()
+        appt = Appointment(
+        title='My Appointment',
+        start=now,
+        end=now,  
+        allday=False)
+        
+        db.session.add(appt)
+        db.session.commit()
+
+
+
+
+        #db.session.add(appt)
+        #db.session.commit()
+        # Success. Send user back to full appointment list.
+        return redirect(url_for('appointment_list'))
+    # Either first load or validation error at this point.
+    return render_template('appointment/edit.html',
+    form=form)
 
 
 @app.route(
@@ -79,14 +119,14 @@ def appointment_delete(appointment_id):
 
 
 @app.route('/')
-def hello():
-    """
-    >>> hello()
-    'Hello, world!'
-    """
-    return 'Hello, world!'
+def index():
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
-    doctest.testmod()
+    doctest.testmod()    
     app.run('0.0.0.0', 5000)
+    
+
+    
+
