@@ -80,23 +80,12 @@ def appointment_create():
     """
     form = AppointmentForm(request.form)
     if request.method == 'POST' and form.validate():
-        #appt = Appointment()
-        # form.populate_obj(appt)
-        #print("Start: {}".format(appt.start))
-
-        # Create. Add a new model instance to the session.
-        now = datetime.now()
-        appt = Appointment(
-            title='My Appointment',
-            start=now,
-            end=now,
-            allday=False)
-
+        appt = Appointment()
+        form.populate_obj(appt)
+        print("Start: {}".format(appt.start))
+        
         db.session.add(appt)
         db.session.commit()
-
-        # db.session.add(appt)
-        # db.session.commit()
         # Success. Send user back to full appointment list.
         return redirect(url_for('appointment_list'))
     # Either first load or validation error at this point.
