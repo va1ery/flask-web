@@ -51,7 +51,7 @@ def appointment_edit(appointment_id):
 @app.route('/appointments/create/', methods=['GET', 'POST'])
 def appointment_create():
     """
-    Provide HTML form to create a new appointment.    
+    Provide HTML form to create a new appointment.
     >>> appointment_create()
     'Form to create a new appointment.'
     """
