@@ -52,8 +52,6 @@ def appointment_edit(appointment_id):
 def appointment_create():
     """
     Provide HTML form to create a new appointment.
-    >>> appointment_create()
-    'Form to create a new appointment.'
     """
     form = AppointmentForm(request.form)
     if request.method == 'POST' and form.validate():
