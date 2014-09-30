@@ -16,6 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
 db = SQLAlchemy(app)
 db.Model = Base
 
+
 @app.route('/appointments/')
 def appointment_list():
     """
@@ -37,7 +38,7 @@ def appointment_detail(appointment_id):
 
 
 @app.route('/appointments/<int:appointment_id>/edit/',
-    methods=['GET', 'POST'])
+           methods=['GET', 'POST'])
 def appointment_edit(appointment_id):
     """
     Muestra el formulario para editar una cita en especifico
@@ -59,7 +60,6 @@ def appointment_create():
         appt = Appointment()
         form.populate_obj(appt)
         print("Start: {}".format(appt.start))
-        
 
         db.session.add(appt)
         db.session.commit()
