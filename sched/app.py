@@ -1,20 +1,8 @@
 from flask import *
 from flask.ext.sqlalchemy import SQLAlchemy
-from models import Base
-
-from flask import abort, jsonify, redirect, render_template
-from flask import request, url_for
+from sched.models import Base
 from sched.forms import AppointmentForm
 from sched.models import Appointment
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-
-from datetime import datetime
-from sqlalchemy import Boolean, Column
-from sqlalchemy import DateTime, Integer, String, Text
-from sqlalchemy.ext.declarative import declarative_base
-
 
 import doctest
 
@@ -25,19 +13,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
 # configuration. Load the extension, giving it the app object,
 # and override its default Model class with the pure
 # SQLAlchemy declarative Base class.
-
-
 db = SQLAlchemy(app)
 db.Model = Base
-
-
-@app.route('/object/')
-def return_object():
-    headers = {'Content-Type': 'text/plain'}
-    status = 404
-    t = ('Hefjasd fasdld!', status, headers)
-    return make_response(t)
-
 
 @app.route('/appointments/')
 def appointment_list():
@@ -59,8 +36,7 @@ def appointment_detail(appointment_id):
     return 'Detail of appointment #{0}.'.format(appointment_id)
 
 
-@app.route(
-    '/appointments/<int:appointment_id>/edit/',
+@app.route('/appointments/<int:appointment_id>/edit/',
     methods=['GET', 'POST'])
 def appointment_edit(appointment_id):
     """
@@ -80,28 +56,16 @@ def appointment_create():
     """
     form = AppointmentForm(request.form)
     if request.method == 'POST' and form.validate():
-        #appt = Appointment()
-        # form.populate_obj(appt)
-        #print("Start: {}".format(appt.start))
-
-        # Create. Add a new model instance to the session.
-        now = datetime.now()
-        appt = Appointment(
-            title='My Appointment',
-            start=now,
-            end=now,
-            allday=False)
-
+        appt = Appointment()
+        form.populate_obj(appt)
+        
+                
         db.session.add(appt)
         db.session.commit()
-
-        # db.session.add(appt)
-        # db.session.commit()
         # Success. Send user back to full appointment list.
         return redirect(url_for('appointment_list'))
     # Either first load or validation error at this point.
-    return render_template('appointment/edit.html',
-                           form=form)
+    return render_template('appointment/edit.html', form=form)
 
 
 @app.route(
