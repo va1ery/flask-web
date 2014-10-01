@@ -7,4 +7,5 @@ Scenario: Create an appoitment
   	And I fill in field with id "end" with "2010-11-11 13:00:00"
   	And I fill in field with id "location" with "The office"
   	And I fill in field with id "description" with "Una descripcion"
+  	And save the appointment in the bottom "saveApp"
   	
