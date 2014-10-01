@@ -58,13 +58,9 @@ def appointment_create():
     if request.method == 'POST' and form.validate():
         appt = Appointment()
         form.populate_obj(appt)
-<<<<<<< HEAD
         print("Start: {}".format(appt.start))
         
-=======
-        
-                
->>>>>>> e557ca5c798b1f74eedba1b5d6ceebc150ec6aa4
+
         db.session.add(appt)
         db.session.commit()
         # Success. Send user back to full appointment list.

@@ -44,9 +44,9 @@ if __name__ == "__main__":
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
-<<<<<<< HEAD
+
     print("Enters here")
-=======
+
 
     now = datetime.now()
     # Create. Add a new model instance to the session.    
@@ -57,5 +57,3 @@ if __name__ == "__main__":
     
     session.add(appt)
     session.commit()
-    
->>>>>>> e557ca5c798b1f74eedba1b5d6ceebc150ec6aa4
