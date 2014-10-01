@@ -31,10 +31,13 @@ def appointment_list():
 def appointment_detail(appointment_id):
     """
     Muestra el detalle de una cita en especifico
-    >>> appointment_detail(1)
-    'Detail of appointment #1.'
     """
-    return 'Detail of appointment #{0}.'.format(appointment_id)
+    # Query: get Appointment object by ID.
+    appt = db.session.query(Appointment).get(appointment_id)
+    if appt is None:
+        # Abort with Not Found.
+        abort(404)
+    return render_template('appointment/detail.html', appt=appt)
 
 
 @app.route('/appointments/<int:appointment_id>/edit/',
