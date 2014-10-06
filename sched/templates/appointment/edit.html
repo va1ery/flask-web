@@ -1,6 +1,13 @@
+{% if request.endpoint.endswith('edit') %}
+{% set title = 'Edit Appointment' %}
+{% else %}
+{% set title = 'Add Appointment' %}
+{% endif %}
+
+
+
 {% extends 'base.html' %}
 {% from 'appointment/common.html' import edit_field %}
-{% set title = 'Add Appointment' %}
 {% block title %}{{ title }}{% endblock title %}
 {% block main %}
 <div class="row">

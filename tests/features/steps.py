@@ -9,16 +9,16 @@ from selenium import webdriver
 def setup_browser():
     world.browser = webdriver.Firefox()
 
-def find_field_by_class(browser, attribute):  
-    xpath = "//input[@class='%s']" % attribute  
-    elems = browser.find_elements_by_xpath(xpath)  
-    return elems[0] if elems else False 
+
+def find_field_by_class(browser, attribute):
+    xpath = "//input[@class='%s']" % attribute
+    elems = browser.find_elements_by_xpath(xpath)
+    return elems[0] if elems else False
 
 
 @step(u'Given I go to "([^"]*)"')
 def given_i_go_to_url(step, url):
     world.response = world.browser.get(url)
-
 
 
 @step(u'When I fill in field with id "([^"]*)" with "([^"]*)"')
@@ -44,16 +44,16 @@ def and_save_the_appointment_in_the_bottom_group1(step, field_id):
         submit_button.click()
 
 
-## General
+# General
 @step('Then The element with class of "(.*?)" contains "(.*?)"')
 def element_contains(step, element_class, value):
-    with AssertContextManager(step):    
+    with AssertContextManager(step):
         element = world.browser.find_element_by_class_name(element_class)
         assert value in element.text, "Got %s " % element.text
-    
+
 
 @step(u'Then I see that the title of the page contains "([^"]*)"')
 def then_i_see_the_title(step, title):
     with AssertContextManager(step):
-        element = world.browser.find_element_by_tag_name('h1')        
+        element = world.browser.find_element_by_tag_name('h1')
         assert title == element.text, "Got %s " % element.text

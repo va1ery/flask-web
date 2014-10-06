@@ -48,11 +48,19 @@ def appointment_detail(appointment_id):
            methods=['GET', 'POST'])
 def appointment_edit(appointment_id):
     """
-    Muestra el formulario para editar una cita en especifico
-    >>> appointment_edit(1)
-    'Form to edit appointment #1.'
+    Provide HTML form to edit a given appointment
     """
-    return 'Form to edit appointment #{0}.'.format(appointment_id)
+    appt = db.session.query(Appointment).get(appointment_id)
+    if appt is None:
+        abort(404)
+    form = AppointmentForm(request.form, appt)
+    if request.method == 'POST' and form.validate():
+        form.populate_obj(appt)
+        db.session.commit()
+        # Success. Send the user back to the detail view.
+        return redirect(url_for('appointment_detail', appointment_id=appt.id))
+    # Either
+    return render_template('appointment/edit.html', form=form)
 
 
 @app.route('/appointments/create/', methods=['GET', 'POST'])
