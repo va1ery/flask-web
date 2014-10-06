@@ -25,7 +25,6 @@ class Appointment(Base):
     @property
     def duration(self):
         delta = self.end - self.start
-        print("Enters duration")
         return delta.days * 24 * 60 * 60 + delta.seconds
 
     def __repr__(self):
