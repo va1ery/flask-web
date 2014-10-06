@@ -9,6 +9,7 @@ before_script:
 
 # command to run tests
 script: 
+  - lettuce tests/
   - coverage run --omit="*site-packages*" testsUnit.py
   - coverage report -m
   - nosetests --with-doctest -s sched
