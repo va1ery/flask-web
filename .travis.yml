@@ -4,7 +4,9 @@ python:
 
 # command to install dependencies
 install: "pip install -r requirements.txt"
+
 before_script: 
+  - "pip freeze"
   - "flake8 --ignore=F403 sched tests/features"
 
 # command to run tests
