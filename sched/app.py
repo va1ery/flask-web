@@ -3,6 +3,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from sched.models import Base
 from sched.forms import AppointmentForm
 from sched.models import Appointment
+from sched import filters
+
 
 import doctest
 
@@ -15,6 +17,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
 # SQLAlchemy declarative Base class.
 db = SQLAlchemy(app)
 db.Model = Base
+
+filters.init_app(app)
 
 
 @app.route('/appointments/')

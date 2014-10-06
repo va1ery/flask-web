@@ -25,10 +25,10 @@
     <p><i class="icon-home"></i> {{ appt.location }}</p>
   {% endif %}
   {% if appt.allday %}
-           <p><i class="icon-calendar"></i> {{ appt.start}}</p>
+           <p><i class="icon-calendar"></i> {{ appt.start | date}}</p>
   {% else %}
-           <p><i class="icon-calendar"></i> {{ appt.start}}
-             for {{ appt.duration }}</p>
+           <p><i class="icon-calendar"></i> {{ appt.start | datetime}}
+             for {{ appt.duration | duration}}</p>
   {% endif %}
 
   {% if show_edit %}
@@ -43,7 +43,7 @@
   
   {% if show_description and appt.description %}
       <div class="row">
-        <p class="span5">{{ appt.description }}</p>
+        <p class="span5">{{ appt.description | nl2br}}</p>
       </div>
    {% endif %}
 </div>
