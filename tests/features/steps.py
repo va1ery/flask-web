@@ -84,3 +84,9 @@ def then_the_element_with_actual_date(step, element_class):
     with AssertContextManager(step):
         element = world.browser.find_element_by_class_name(element_class)
         assert fechaActualComparacion in element.text, "Got %s " % element.text
+
+@step(u'Then I see at least "([^"]*)" appoitments with the class "([^"]*)"')
+def then_i_see_two_appoitments(step, num, element_class):
+    with AssertContextManager(step):
+        elements = world.browser.find_elements_by_class_name(element_class)        
+        assert len(elements) > int(num)

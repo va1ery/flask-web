@@ -29,4 +29,7 @@ Scenario: Edit a date given appointment
   When I update the field with id "start" with actual date
   And save the appointment in the bottom "saveApp"
   Then The element with class of "appointment-detail" contains the actual date
-									
+
+Scenario: List all appoitments    
+  Given I go to "http://127.0.0.1:5000/appointments/"
+  Then I see at least "2" appoitments with the class "appointment-detail"
