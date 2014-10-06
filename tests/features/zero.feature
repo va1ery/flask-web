@@ -17,4 +17,16 @@ Scenario: Consult an appoitment
 Scenario: Consult an appoitment that does not exist
 	Given I go to "http://127.0.0.1:5000/appointments/0/"
 	Then I see that the title of the page contains "Not Found"
+
+Scenario: Edit a given appointment
+  Given I go to "http://127.0.0.1:5000/appointments/1/edit"
+  When I update the field with id "title" with "Titulo Nuevo"
+  And save the appointment in the bottom "saveApp"
+  Then The element with class of "appointment-detail" contains "Titulo Nuevo"
+
+Scenario: Edit a date given appointment
+  Given I go to "http://127.0.0.1:5000/appointments/1/edit"
+  When I update the field with id "start" with actual date
+  And save the appointment in the bottom "saveApp"
+  Then The element with class of "appointment-detail" contains the actual date
 									

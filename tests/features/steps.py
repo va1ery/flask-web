@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from lettuce import *
 from lettuce_webdriver.util import AssertContextManager
+from datetime import datetime
 
 from selenium import webdriver
 
@@ -57,3 +58,29 @@ def then_i_see_the_title(step, title):
     with AssertContextManager(step):
         element = world.browser.find_element_by_tag_name('h1')
         assert title == element.text, "Got %s " % element.text
+
+
+@step(u'When I update the field with id "([^"]*)" with "([^"]*)"')
+def when_i_update(step, field_id, value):
+    with AssertContextManager(step):
+        text_field = world.browser.find_element_by_id(field_id)
+        text_field.clear()
+        text_field.send_keys(value)
+
+fechaActual = datetime.now().strftime("%Y-%m-%d %l:%M:%S")
+fechaActualComparacion = datetime.now().strftime("%Y-%m-%d")
+
+
+@step(u'When I update the field with id "([^"]*)" with actual date')
+def when_i_update_with_actual_date(step, field_id):
+    with AssertContextManager(step):
+        text_field = world.browser.find_element_by_id(field_id)
+        text_field.clear()
+        text_field.send_keys(fechaActual)
+
+
+@step(u'Then The element with class of "([^"]*)" contains the actual date')
+def then_the_element_with_actual_date(step, element_class):
+    with AssertContextManager(step):
+        element = world.browser.find_element_by_class_name(element_class)
+        assert fechaActualComparacion in element.text, "Got %s " % element.text
