@@ -17,12 +17,12 @@ def find_field_by_class(browser, attribute):
     return elems[0] if elems else False
 
 
-@step(u'Given I go to "([^"]*)"')
+@step('I go to "([^"]*)"')
 def given_i_go_to_url(step, url):
     world.response = world.browser.get(url)
 
 
-@step(u'When I fill in field with id "([^"]*)" with "([^"]*)"')
+@step('I fill in field with id "([^"]*)" with "([^"]*)"')
 def when_i_fill_in_field_with_id_group1_with_group2(step, field_id, value):
     with AssertContextManager(step):
         text_field = world.browser.find_element_by_id(field_id)
@@ -30,7 +30,7 @@ def when_i_fill_in_field_with_id_group1_with_group2(step, field_id, value):
         text_field.send_keys(value)
 
 
-@step(u'And I fill in field with id "([^"]*)" with "([^"]*)"')
+@step('I fill in field with id "([^"]*)" with "([^"]*)"')
 def and_i_fill_in_field_with_id_group1_with_group2(step, field_id, value):
     with AssertContextManager(step):
         text_field = world.browser.find_element_by_id(field_id)
@@ -38,29 +38,28 @@ def and_i_fill_in_field_with_id_group1_with_group2(step, field_id, value):
         text_field.send_keys(value)
 
 
-@step(u'And save the appointment in the bottom "([^"]*)"')
-def and_save_the_appointment_in_the_bottom_group1(step, field_id):
+@step('I do click in the button "([^"]*)"')
+def and_i_do_click_in_button(step, field_class):
     with AssertContextManager(step):
-        submit_button = world.browser.find_element_by_id(field_id)
+        submit_button = world.browser.find_element_by_class_name(field_class)
         submit_button.click()
 
 
-# General
-@step('Then The element with class of "(.*?)" contains "(.*?)"')
+@step('The element with class of "(.*?)" contains "(.*?)"')
 def element_contains(step, element_class, value):
     with AssertContextManager(step):
         element = world.browser.find_element_by_class_name(element_class)
-        assert value in element.text, "Got %s " % element.text
+        assert (value in element.text), "Got %s, %s " % (element.text, value)
 
 
-@step(u'Then I see that the title of the page contains "([^"]*)"')
+@step('I see that the title of the page contains "([^"]*)"')
 def then_i_see_the_title(step, title):
     with AssertContextManager(step):
         element = world.browser.find_element_by_tag_name('h1')
         assert title == element.text, "Got %s " % element.text
 
 
-@step(u'When I update the field with id "([^"]*)" with "([^"]*)"')
+@step('I update the field with id "([^"]*)" with "([^"]*)"')
 def when_i_update(step, field_id, value):
     with AssertContextManager(step):
         text_field = world.browser.find_element_by_id(field_id)
@@ -71,7 +70,7 @@ fechaActual = datetime.now().strftime("%Y-%m-%d %l:%M:%S")
 fechaActualComparacion = datetime.now().strftime("%Y-%m-%d")
 
 
-@step(u'When I update the field with id "([^"]*)" with actual date')
+@step('I update the field with id "([^"]*)" with actual date')
 def when_i_update_with_actual_date(step, field_id):
     with AssertContextManager(step):
         text_field = world.browser.find_element_by_id(field_id)
@@ -79,14 +78,33 @@ def when_i_update_with_actual_date(step, field_id):
         text_field.send_keys(fechaActual)
 
 
-@step(u'Then The element with class of "([^"]*)" contains the actual date')
+@step('The element with class of "([^"]*)" contains the actual date')
 def then_the_element_with_actual_date(step, element_class):
     with AssertContextManager(step):
         element = world.browser.find_element_by_class_name(element_class)
         assert fechaActualComparacion in element.text, "Got %s " % element.text
 
-@step(u'Then I see at least "([^"]*)" appoitments with the class "([^"]*)"')
+
+@step('I see at least "([^"]*)" appoitments with the class "([^"]*)"')
 def then_i_see_two_appoitments(step, num, element_class):
     with AssertContextManager(step):
-        elements = world.browser.find_elements_by_class_name(element_class)        
+        elements = world.browser.find_elements_by_class_name(element_class)
         assert len(elements) > int(num)
+
+
+@step('I select the appointment with the title "([^"]*)"')
+def when_i_select_the_appointment_with_the_title(step, title):
+    with AssertContextManager(step):
+        element = world.browser.find_element_by_link_text(title)
+        element.click()
+
+
+@step('The element with the class of "([^"]*)" not contains "([^"]*)"')
+def then_the_element_with_the_class_not_contains(step, element_class, title):
+    with AssertContextManager(step):
+        elements = world.browser.find_elements_by_class_name(element_class)
+        lst = []
+        for e in elements:
+            lst.append(e.text)
+
+        assert title not in lst

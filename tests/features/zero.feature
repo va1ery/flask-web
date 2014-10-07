@@ -2,17 +2,17 @@ Feature: Administrar citas
 
 Scenario: Create an appoitment
     Given I go to "http://127.0.0.1:5000/appointments/create/"  
-  	When I fill in field with id "title" with "Una cita"
+  	When I fill in field with id "title" with "Cita con el dentista"
   	And I fill in field with id "start" with "2010-11-11 12:00:00"
   	And I fill in field with id "end" with "2010-11-11 13:00:00"
-  	And I fill in field with id "location" with "The office"
-  	And I fill in field with id "description" with "Una descripcion"
-  	And save the appointment in the bottom "saveApp"
+  	And I fill in field with id "location" with "Av. Universidad"
+  	And I fill in field with id "description" with "Llegar temprano para que no se enoje el dentista"
+    And I do click in the button "btn"
   	
 
 Scenario: Consult an appoitment
-	Given I go to "http://127.0.0.1:5000/appointments/8/"
-	Then The element with class of "appointment-detail" contains "algo"
+	Given I go to "http://127.0.0.1:5000/appointments/2/"
+	Then The element with class of "appointment-detail" contains "My Appointment"
 
 Scenario: Consult an appoitment that does not exist
 	Given I go to "http://127.0.0.1:5000/appointments/0/"
@@ -21,15 +21,22 @@ Scenario: Consult an appoitment that does not exist
 Scenario: Edit a given appointment
   Given I go to "http://127.0.0.1:5000/appointments/1/edit"
   When I update the field with id "title" with "Titulo Nuevo"
-  And save the appointment in the bottom "saveApp"
+  And I do click in the button "btn"
   Then The element with class of "appointment-detail" contains "Titulo Nuevo"
 
 Scenario: Edit a date given appointment
   Given I go to "http://127.0.0.1:5000/appointments/1/edit"
   When I update the field with id "start" with actual date
-  And save the appointment in the bottom "saveApp"
+  And I do click in the button "btn"
   Then The element with class of "appointment-detail" contains the actual date
 
 Scenario: List all appoitments    
   Given I go to "http://127.0.0.1:5000/appointments/"
   Then I see at least "2" appoitments with the class "appointment-detail"
+
+Scenario: Delete an appoitment  
+  Given I go to "http://127.0.0.1:5000/appointments/"
+  When I select the appointment with the title "Cita con el dentista"
+  And I do click in the button "appointment-delete-link"    
+  And I go to "http://127.0.0.1:5000/appointments/"  
+  Then The element with the class of "appointment-detail" not contains "Cita con el dentista"
