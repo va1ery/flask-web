@@ -102,6 +102,15 @@ def index():
     return render_template('index.html')
 
 
+@app.errorhandler(404)
+def error_not_found(error):
+    return render_template('error/not_found.html'), 404
+
+@app.errorhandler(405)
+def error_not_found(error):
+    return render_template('error/not_found.html'), 405
+
+
 if __name__ == "__main__":
     doctest.testmod()
     app.run('0.0.0.0', 5000)
