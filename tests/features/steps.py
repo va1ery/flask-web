@@ -62,7 +62,7 @@ def element_contains(step, element_class, value):
 @step('I see that the title of the page contains "([^"]*)"')
 def then_i_see_the_title(step, title):
     with AssertContextManager(step):
-        element = world.browser.find_element_by_tag_name('h1')
+        element = world.browser.find_element_by_tag_name('h2')
         assert title == element.text, "Got %s " % element.text
 
 
