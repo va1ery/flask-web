@@ -1,5 +1,5 @@
 from wtforms import Form, BooleanField, DateTimeField
-from wtforms import TextAreaField, TextField
+from wtforms import TextAreaField, TextField, PasswordField
 from wtforms.validators import Length, required
 
 
@@ -19,3 +19,8 @@ if __name__ == "__main__":
     print('Here is how a form field displays:')
     print(form.title.label)
     print(form.title)
+
+
+class LoginForm(Form):
+    username = TextField('Email', [required()])
+    password = PasswordField('Password', [required()])

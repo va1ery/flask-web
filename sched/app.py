@@ -1,12 +1,15 @@
+import doctest
 from flask import *
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.login import LoginManager, current_user
+from flask.ext.login import login_user
+from flask.ext.login import login_required
+
 from sched.models import Base
-from sched.forms import AppointmentForm
+from sched.forms import AppointmentForm, LoginForm
 from sched.models import Appointment
 from sched import filters
-
-
-import doctest
+from sched.models import User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
@@ -21,7 +24,44 @@ db.Model = Base
 filters.init_app(app)
 
 
+# Use Flask-Login to track current user in Flask's session.
+login_manager = LoginManager()
+login_manager.setup_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """Flask-Login hook to load a User instance from ID."""
+    return db.session.query(User).get(user_id)
+
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated():
+        return redirect(url_for('appointment_list'))
+
+    form = LoginForm(request.form)
+    error = None
+    if request.method == 'POST' and form.validate():
+        email = form.username.data.lower().strip()
+        password = form.password.data.lower().strip()
+        user, authenticated = User.authenticate(
+            db.session.query, email, password)
+
+        if authenticated:
+            login_user(user)
+            return redirect(url_for('appointment_list'))
+        else:
+            error = 'Incorrect username or password.'
+
+    return render_template('user/login.html', form=form, error=error)
+
+app.secret_key = 'secret_key'
+
+
 @app.route('/appointments/')
+@login_required
 def appointment_list():
     """
     Provide HTML listing of all appointments
@@ -33,6 +73,7 @@ def appointment_list():
 
 
 @app.route('/appointments/<int:appointment_id>/')
+@login_required
 def appointment_detail(appointment_id):
     """
     Muestra el detalle de una cita en especifico
@@ -47,6 +88,7 @@ def appointment_detail(appointment_id):
 
 @app.route('/appointments/<int:appointment_id>/edit/',
            methods=['GET', 'POST'])
+@login_required
 def appointment_edit(appointment_id):
     """
     Provide HTML form to edit a given appointment
@@ -65,13 +107,18 @@ def appointment_edit(appointment_id):
 
 
 @app.route('/appointments/create/', methods=['GET', 'POST'])
+@login_required
 def appointment_create():
     """
     Provide HTML form to create a new appointment.
     """
     form = AppointmentForm(request.form)
     if request.method == 'POST' and form.validate():
-        appt = Appointment()
+
+        appt = Appointment(user_id=current_user.id)
+        if appt.user_id != current_user.id:
+            abort(403)
+
         form.populate_obj(appt)
         print("Start: {}".format(appt.start))
 
@@ -84,6 +131,7 @@ def appointment_create():
 
 
 @app.route('/appointments/<int:appointment_id>/delete/', methods=['DELETE'])
+@login_required
 def appointment_delete(appointment_id):
     """Delete record using HTTP DELETE, respond with JSON."""
     appt = db.session.query(Appointment).get(appointment_id)
@@ -106,9 +154,10 @@ def index():
 def error_not_found(error):
     return render_template('error/not_found.html'), 404
 
+
 @app.errorhandler(405)
-def error_not_found(error):
-    return render_template('error/not_found.html'), 405
+def error_not_allowed(error):
+    return render_template('error/not_allowed.html'), 405
 
 
 if __name__ == "__main__":
