@@ -38,12 +38,10 @@ def load_user(user_id):
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated():
-        return redirect(url_for('appointment_list'))
 
     form = LoginForm(request.form)
     error = None
-    
+
     if request.method == 'POST' and form.validate():
         email = form.username.data.lower().strip()
         password = form.password.data.lower().strip()
@@ -57,6 +55,11 @@ def login():
             error = 'Incorrect username or password.'
 
     return render_template('user/login.html', form=form, error=error)
+
+
+def validarUsuario():
+    if current_user.is_authenticated():
+        return redirect(url_for('appointment_list'))
 
 
 @app.route('/logout/')

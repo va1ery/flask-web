@@ -61,16 +61,19 @@ def do_duration(seconds):
     return template.format(d=d, h=h, m=m, s=s)
 
 
-def formatoDia(d):    
+def formatoDia(d):
     return '{d} days' if d > 1 else '{d} day'
-    
-def formatoHora( h):
+
+
+def formatoHora(h):
     return '{h} hours' if h > 1 else '{h} hour'
 
-def formatoMinuto( m):
+
+def formatoMinuto(m):
     return '{m} minutes' if m > 1 else '{m} minute'
 
-def formatoSegundo( s):
+
+def formatoSegundo(s):
     return '{s} seconds' if s > 1 else '{s} second'
 
 
