@@ -12,15 +12,16 @@ class AppointmentForm(Form):
     location = TextField('Location', [Length(max=255)])
     description = TextAreaField('Description')
 
-if __name__ == "__main__":
-
-        # Demonstration of a WTForms form by itself.
-    form = AppointmentForm()
-    print('Here is how a form field displays:')
-    print(form.title.label)
-    print(form.title)
 
 
 class LoginForm(Form):
     username = TextField('Email', [required()])
     password = PasswordField('Password', [required()])
+
+
+if __name__ == "__main__":
+
+        # Demonstration of a WTForms form by itself.
+    form = AppointmentForm()
+    print('Here is how a form field displays:')
+    print(form.title)
