@@ -26,10 +26,28 @@ class testModelApponintment(unittest.TestCase):
         self.assertNotEqual('<Appointment: 3>', appt.__repr__())
 
 
-# class testModelUser(unittest.TestCase):
-    # def test_user(self):
-    #	user = models.User(name="Usuario Nuevo", email="email@cimat.mx")
-    #	user._set_password("thepassword")
+class testModelUser(unittest.TestCase):
+
+    def test_user_password(self):
+        user = models.User(name="Usuario Nuevo", email="email2@cimat.mx")
+        user._set_password("thepassword")
+        self.assertNotEqual(user._get_password, "thepassword")
+        self.assertEqual(True, user.check_password("thepassword"))
+        self.assertNotEqual(True, user.check_password("thepassword2"))
+
+    def test_user_status(self):
+        user = models.User(name="Usuario Nuevo", email="email2@cimat.mx")
+        user._set_password("thepassword")
+        self.assertNotEqual(user.get_id, 0)
+        self.assertNotEqual(user.is_active, False)
+        self.assertNotEqual(user.is_anonymous, True)
+        self.assertNotEqual(user.is_authenticated, False)
+
+    def test_user_authenticate(self):
+        user, authenticate = models.User.authenticate(
+            app.db.session.query, "email@cimat.mx", "thepassword")
+        self.assertNotEqual(authenticate, False)
+        self.assertNotEqual(user.name, "Usuario")
 
 
 class testForm(unittest.TestCase):
@@ -65,13 +83,13 @@ class testApp(unittest.TestCase):
     def test_appt_list(self):
         response = self.appt.get("/appointments")
         print("response")
-        print(response.data)
+        # print(response.data)
         self.assertEquals(response.status_code, 301)
         assert 'Redirecting' in response.data
 
     def test_login(self):
         response = self.appt.get("/login/?next=%2Fappointments%2F")
-        print(response.data)
+        # print(response.data)
 
 
 class testDelete(unittest.TestCase):

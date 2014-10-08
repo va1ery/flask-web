@@ -13,7 +13,6 @@ class AppointmentForm(Form):
     description = TextAreaField('Description')
 
 
-
 class LoginForm(Form):
     username = TextField('Email', [required()])
     password = PasswordField('Password', [required()])
