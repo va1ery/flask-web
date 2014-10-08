@@ -103,8 +103,6 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    print("Enters here")
-
     user = User(name="Usuario Nuevo", email="email@cimat.mx")
     user._set_password("thepassword")
 

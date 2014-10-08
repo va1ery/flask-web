@@ -38,14 +38,21 @@ def and_i_fill_in_field_with_id_group1_with_group2(step, field_id, value):
         text_field.send_keys(value)
 
 
+@step('I submit the form')
+def and_i_submit_the_form(step):
+    with AssertContextManager(step):
+        form = world.browser.find_element_by_class_name('form-horizontal')
+        form.submit()
+
+
 @step('I do click in the button "([^"]*)"')
 def and_i_do_click_in_button(step, field_class):
     with AssertContextManager(step):
-        submit_button = world.browser.find_element_by_class_name(field_class)
-        submit_button.click()
+        button = world.browser.find_element_by_class_name(field_class)
+        button.click()
 
 
-@step('The element with class of "(.*?)" contains "(.*?)"')
+@step('I see that the element with class "(.*?)" contains "(.*?)"')
 def element_contains(step, element_class, value):
     with AssertContextManager(step):
         element = world.browser.find_element_by_class_name(element_class)
@@ -78,7 +85,7 @@ def when_i_update_with_actual_date(step, field_id):
         text_field.send_keys(fechaActual)
 
 
-@step('The element with class of "([^"]*)" contains the actual date')
+@step('I see that the element with class "([^"]*)" contains the actual date')
 def then_the_element_with_actual_date(step, element_class):
     with AssertContextManager(step):
         element = world.browser.find_element_by_class_name(element_class)
@@ -99,7 +106,7 @@ def when_i_select_the_appointment_with_the_title(step, title):
         element.click()
 
 
-@step('The element with the class of "([^"]*)" not contains "([^"]*)"')
+@step('I see that the element with the class "([^"]*)" not contains "([^"]*)"')
 def then_the_element_with_the_class_not_contains(step, element_class, title):
     with AssertContextManager(step):
         elements = world.browser.find_elements_by_class_name(element_class)

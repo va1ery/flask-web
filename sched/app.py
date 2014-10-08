@@ -2,8 +2,7 @@ import doctest
 from flask import *
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager, current_user
-from flask.ext.login import login_user
-from flask.ext.login import login_required
+from flask.ext.login import login_user, logout_user, login_required
 
 from sched.models import Base
 from sched.forms import AppointmentForm, LoginForm
@@ -13,6 +12,7 @@ from sched.models import User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
+app.secret_key = 'secret_key'
 
 # Use Flask-SQLAlchemy for its engine and session
 # configuration. Load the extension, giving it the app object,
@@ -57,7 +57,11 @@ def login():
 
     return render_template('user/login.html', form=form, error=error)
 
-app.secret_key = 'secret_key'
+
+@app.route('/logout/')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 @app.route('/appointments/')
