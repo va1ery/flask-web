@@ -38,6 +38,7 @@ def load_user(user_id):
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+    validarUsuario()
 
     form = LoginForm(request.form)
     error = None
