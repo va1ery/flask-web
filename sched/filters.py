@@ -15,7 +15,14 @@ def init_app(app):
 
 
 def do_datetime(dt, format=None):
-    """Jinja template filter to format a datetime object with date & time."""
+    """
+    Jinja template filter to format a datetime object with date & time.
+    >>> do_datetime(None)
+    ''
+    >>> from datetime import datetime
+    >>> do_datetime(datetime(2010, 11, 11, 13, 00, 00))
+    '2010-11-11 - Thursday at 1:00pm'
+    """
     if dt is None:
         # By default, render an empty string.
         return ''
@@ -34,7 +41,14 @@ def do_datetime(dt, format=None):
 
 
 def do_date(dt, format='%Y-%m-%d - %A'):
-    """Jinja template filter to format a datetime object with date only."""
+    """
+    Jinja template filter to format a datetime object with date only.
+    >>> do_date(None)
+    ''
+    >>> from datetime import datetime
+    >>> do_date(datetime(2010, 11, 11, 13, 00, 00))
+    '2010-11-11 - Thursday'
+    """
     if dt is None:
         return ''
     # Only difference with do_datetime is the default format, but that is
@@ -43,10 +57,12 @@ def do_date(dt, format='%Y-%m-%d - %A'):
 
 
 def do_duration(seconds):
-    """Jinja template filter to format seconds to humanized duration.
-
-    3600 becomes "1 hour".
-    258732 becomes "2 days, 23 hours, 52 minutes, 12 seconds".
+    """
+    Jinja template filter to format seconds to humanized duration.
+    >>> do_duration(3600)
+    '0 day, 1 hour, 0 minute, 0 second'
+    >>> do_duration(258732)
+    '2 days, 23 hours, 52 minutes, 12 seconds'
     """
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
@@ -62,23 +78,52 @@ def do_duration(seconds):
 
 
 def formatoDia(d):
+    """
+    Format for days
+    >>> formatoDia(1)
+    '{d} day'
+    >>> formatoDia(2)
+    '{d} days'
+    """
     return '{d} days' if d > 1 else '{d} day'
 
 
 def formatoHora(h):
+    """
+    Format for hour
+    >>> formatoHora(1)
+    '{h} hour'
+    >>> formatoHora(2)
+    '{h} hours'
+    """
     return '{h} hours' if h > 1 else '{h} hour'
 
 
 def formatoMinuto(m):
+    """
+    Format for minutes
+    >>> formatoMinuto(1)
+    '{m} minute'
+    >>> formatoMinuto(30)
+    '{m} minutes'
+    """
     return '{m} minutes' if m > 1 else '{m} minute'
 
 
 def formatoSegundo(s):
+    """
+    Format for seconds
+    >>> formatoSegundo(1)
+    '{s} second'
+    >>> formatoSegundo(23)
+    '{s} seconds'
+    """
     return '{s} seconds' if s > 1 else '{s} second'
 
 
 def do_nl2br(context, value):
-    """Render newline \n characters as HTML line breaks <br />.
+    """
+    Render newline \n characters as HTML line breaks <br />.
 
     By default, HTML normalizes all whitespace on display. This filter allows
     text with line breaks entered into a textarea input to later display in

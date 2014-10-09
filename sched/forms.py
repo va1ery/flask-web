@@ -4,7 +4,9 @@ from wtforms.validators import Length, required
 
 
 class AppointmentForm(Form):
-
+    """
+    Plantilla para el formulario de appointment
+    """
     title = TextField('Title', [Length(max=255)])
     start = DateTimeField('Start', [required()])
     end = DateTimeField('End')
@@ -14,5 +16,8 @@ class AppointmentForm(Form):
 
 
 class LoginForm(Form):
+    """
+    Plantilla para el formulario de Login
+    """
     username = TextField('Email', [required()])
     password = PasswordField('Password', [required()])
