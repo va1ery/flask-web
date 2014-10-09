@@ -93,27 +93,40 @@ class Appointment(Base):
         return (u'<{self.__class__.__name__}: {self.id}>'.format(self=self))
 
 
-if __name__ == "__main__":
-    from datetime import timedelta
-    from sqlalchemy import create_engine
-    from sqlalchemy.orm import sessionmaker
+# if __name__ == "__main__":
+#    from datetime import timedelta
+#    from sqlalchemy import create_engine
+#    from sqlalchemy.orm import sessionmaker
 
-    engine = create_engine('sqlite:///sched.db', echo=True)
-    Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+#    engine = create_engine('sqlite:///sched.db', echo=True)
+#    Base.metadata.create_all(engine)
+#    Session = sessionmaker(bind=engine)
+#    session = Session()
 
-    user = User(name="Usuario Nuevo", email="email@cimat.mx")
-    user._set_password("thepassword")
+#    Add user1
+#    user = User(name="Usuario Nuevo", email="email@cimat.mx")
+#    user._set_password("thepassword")
+#    session.add(user)
+#    session.commit()
 
-    session.add(user)
-    session.commit()
+#    Add user2
+#    user = User(name="Segundo Usuario", email="email2@cimat.mx")
+#    user._set_password("thepassword")
+#    session.add(user)
+#    session.commit()
 
-    now = datetime.now()
-    appt = Appointment(
-        title='Otra cita con el dentista', start=now,
-        end=now + timedelta(seconds=1800),
-        allday=False)
+#    Add user3 (No activo)
+#    user = User(name="Usuario no activo", email="email3@cimat.mx",
+#       active=False)
+#    user._set_password("thepassword")
+#    session.add(user)
+#    session.commit()
 
-    session.add(appt)
-    session.commit()
+#    now = datetime.now()
+#    appt = Appointment(
+#        title='Otra cita con el dentista', start=now,
+#        end=now + timedelta(seconds=1800),
+#        allday=False)
+
+#    session.add(appt)
+#    session.commit()

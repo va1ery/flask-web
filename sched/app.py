@@ -1,4 +1,3 @@
-import doctest
 from flask import *
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager, current_user
@@ -145,10 +144,7 @@ def appointment_delete(appointment_id):
     """Delete record using HTTP DELETE, respond with JSON."""
     appt = db.session.query(Appointment).get(appointment_id)
     if appt is None:
-        # Abort with Not Found, but with simple JSON response.
-        response = jsonify({'status': 'Not Found'})
-        response.status = 404
-        return response
+        abort(404)
     db.session.delete(appt)
     db.session.commit()
     return jsonify({'status': 'OK'})
@@ -169,6 +165,6 @@ def error_not_allowed(error):
     return render_template('error/not_allowed.html'), 405
 
 
-if __name__ == "__main__":
-    doctest.testmod()
-    app.run('0.0.0.0', 5000)
+# if __name__ == "__main__":
+#    doctest.testmod()
+#    app.run('0.0.0.0', 5000)

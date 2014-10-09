@@ -4,14 +4,16 @@ from lettuce_webdriver.util import AssertContextManager
 from datetime import datetime
 
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 @before.all
 def setup_browser():
     world.browser = webdriver.Firefox()
+
+
+@after.all
+def close_browser(total):
+    world.browser.quit()
 
 
 def find_field_by_class(browser, attribute):
@@ -23,9 +25,6 @@ def find_field_by_class(browser, attribute):
 @step('I go to "([^"]*)"')
 def given_i_go_to_url(step, url):
     world.response = world.browser.get(url)
-    WebDriverWait(world.browser, 10).until(
-        EC.presence_of_element_located((By.ID, "username"))
-    )
 
 
 @step('I fill in field with id "([^"]*)" with "([^"]*)"')
